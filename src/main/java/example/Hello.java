@@ -8,16 +8,46 @@
 package example;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.s3.event.S3EventNotification;
+import org.apache.log4j.Logger;
 
-public class Hello implements RequestHandler<MyPojo, String> {
+import java.util.List;
 
-    public String handleRequest(MyPojo input, Context context) {
-        LambdaLogger logger = context.getLogger();
-        String message =
-                "Hello world Lambda! First name = " + input.getFirstName() + "last name = " + input.getLastName();
-        logger.log(message);
-        return message;
+public class Hello implements RequestHandler<S3EventNotification, String> {
+
+    private static final Logger LOGGER = Logger.getLogger(Hello.class);
+
+    public String handleRequest(S3EventNotification input, Context context) {
+        List<S3EventNotification.S3EventNotificationRecord> records = input.getRecords();
+
+        String separator = ",";
+        StringBuilder sb = new StringBuilder();
+        for (S3EventNotification.S3EventNotificationRecord record : records) {
+            sb.append(record.getEventName())
+                    .append(separator)
+                    .append(record.getAwsRegion())
+                    .append(separator)
+                    .append(record.getEventSource())
+                    .append(separator)
+                    .append(record.getS3().getBucket().getArn())
+                    .append(separator)
+                    .append(record.getS3().getBucket().getName())
+                    .append(separator)
+                    .append(record.getS3().getBucket().getOwnerIdentity().getPrincipalId());
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Debug is enabled");
+        }
+
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Info is enabled");
+        }
+
+
+        LOGGER.info(sb.toString());
+        return sb.toString();
+
     }
 }
