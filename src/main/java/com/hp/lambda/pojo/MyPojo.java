@@ -5,7 +5,7 @@
  * Computer Software Documentation, and Technical Data for Commercial Items are licensed
  * to the U.S. Government under vendor's standard commercial license.
  */
-package example;
+package com.hp.lambda.pojo;
 
 public class MyPojo {
     private String firstName;
