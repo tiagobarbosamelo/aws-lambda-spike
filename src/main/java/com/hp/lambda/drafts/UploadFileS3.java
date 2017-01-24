@@ -7,47 +7,46 @@
  */
 package com.hp.lambda.drafts;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import java.io.*;
-import java.util.UUID;
 
 public class UploadFileS3 {
 
-    public static void main(String[] args) throws IOException {
-
-        AmazonS3 s3 = new AmazonS3Client();
-        Region usWest2 = Region.getRegion(Regions.US_WEST_2);
-        s3.setRegion(usWest2);
-
-        String bucketName = "tiago-melo-hello-world-bucket";
-        String key = "MyObjectKey.txt";
-
-        s3.putObject(new PutObjectRequest(bucketName, key, createSampleFile(" Awesome file content")));
-    }
-
+    /**
+     * Upload a file into a AWS S3 bucket.
+     *
+     * @param s3BucketName AWS S3 Bucket name
+     * @param fileName file name
+     * @param fileContent file content
+     * @throws IOException if something goes wrong.
+     */
     public void uploadFileToS3Bucket(String s3BucketName, String fileName, String fileContent) throws IOException {
-        String accessKey = System.getenv("aws_access_key_id");
-        String secretKey = System.getenv("aws_secret_access_key");
-
-
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withCredentials(loadCredentialsFromEnvironment())
                 .withRegion(Regions.US_WEST_2)
                 .build();
 
-        s3Client.putObject(new PutObjectRequest(s3BucketName, fileName, createSampleFile(fileContent)));
+        s3Client.putObject(new PutObjectRequest(s3BucketName, fileName, createSampleFile(fileName,fileContent)));
+    }
 
+    /**
+     * It loads AWS access key id and secret access key from AWS environment in order
+     * to have access to AWS S3 Bucket. Then it creates objects needed to make a AWS S3 upload.
+     *
+     * @return AWSStaticCredentialsProvider that contains information about AWS key access.
+     */
+    private AWSStaticCredentialsProvider loadCredentialsFromEnvironment(){
+        String accessKey = System.getenv("aws_access_key_id");
+        String secretKey = System.getenv("aws_secret_access_key");
+
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        return new AWSStaticCredentialsProvider(awsCreds);
     }
 
     /**
@@ -58,8 +57,8 @@ public class UploadFileS3 {
      *
      * @throws IOException
      */
-    private static File createSampleFile(String fileContent) throws IOException {
-        File file = File.createTempFile("aws-java-sdk-", ".txt");
+    private static File createSampleFile(String fileName, String fileContent) throws IOException {
+        File file = File.createTempFile(fileName, ".txt");
         file.deleteOnExit();
 
         Writer writer = new OutputStreamWriter(new FileOutputStream(file));

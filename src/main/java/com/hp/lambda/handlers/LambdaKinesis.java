@@ -7,8 +7,6 @@
  */
 package com.hp.lambda.handlers;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
@@ -23,7 +21,7 @@ import java.util.List;
 public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
 
     String bucketName = "tiago-melo-hello-world-bucket";
-    String key = "MyLambdaLog.txt";
+    String fileName = "MyLambdaLog.txt";
 
     /**
      * Handle AWS Kinesis stream event.
@@ -48,7 +46,7 @@ public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
         context.getLogger().log("Input: " + sb.toString());
 
         try {
-            new UploadFileS3().uploadFileToS3Bucket(bucketName, key, data);
+            new UploadFileS3().uploadFileToS3Bucket(bucketName, fileName, data);
         } catch (IOException ioE) {
             ioE.printStackTrace();
         }
