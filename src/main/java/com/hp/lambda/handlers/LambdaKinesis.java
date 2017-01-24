@@ -7,22 +7,30 @@
  */
 package com.hp.lambda.handlers;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
+import com.hp.lambda.drafts.UploadFileS3;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Lambda class to deal with AWS Kinesis Stream events
  */
-public class LambdaKinesis  implements RequestHandler<KinesisEvent, Object> {
+public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
+
+    String bucketName = "tiago-melo-hello-world-bucket";
+    String key = "MyLambdaLog.txt";
 
     /**
      * Handle AWS Kinesis stream event.
      *
-     * @param input Kinesis stream event.
+     * @param input   Kinesis stream event.
      * @param context The Lambda execution environment context object.
+     *
      * @return Sample message
      */
     public String handleRequest(KinesisEvent input, Context context) {
@@ -30,12 +38,20 @@ public class LambdaKinesis  implements RequestHandler<KinesisEvent, Object> {
         List<KinesisEvent.KinesisEventRecord> records = input.getRecords();
 
         StringBuilder sb = new StringBuilder();
+        String data = "";
 
         for (KinesisEvent.KinesisEventRecord record : records) {
-            sb.append(new String(record.getKinesis().getData().array()));
+            data = new String(record.getKinesis().getData().array());
+            sb.append(data);
         }
 
         context.getLogger().log("Input: " + sb.toString());
+
+        try {
+            new UploadFileS3().uploadFileToS3Bucket(bucketName, key, data);
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
+        }
 
         return "Kinesis Stream event";
     }
