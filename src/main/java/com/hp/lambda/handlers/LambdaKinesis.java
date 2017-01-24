@@ -10,7 +10,7 @@ package com.hp.lambda.handlers;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.KinesisEvent;
-import com.hp.lambda.drafts.UploadFileS3;
+import com.hp.lambda.utils.UploadFileS3;
 
 import java.io.IOException;
 import java.util.List;

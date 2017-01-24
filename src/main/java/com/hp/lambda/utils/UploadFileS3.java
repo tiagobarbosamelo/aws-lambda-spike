@@ -5,7 +5,7 @@
  * Computer Software Documentation, and Technical Data for Commercial Items are licensed
  * to the U.S. Government under vendor's standard commercial license.
  */
-package com.hp.lambda.drafts;
+package com.hp.lambda.utils;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -16,6 +16,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import java.io.*;
 
+/**
+ * Class responsible to upload txt files to AWS S3 bucket.
+ */
 public class UploadFileS3 {
 
     /**
@@ -36,20 +39,6 @@ public class UploadFileS3 {
     }
 
     /**
-     * It loads AWS access key id and secret access key from AWS environment in order
-     * to have access to AWS S3 Bucket. Then it creates objects needed to make a AWS S3 upload.
-     *
-     * @return AWSStaticCredentialsProvider that contains information about AWS key access.
-     */
-    private AWSStaticCredentialsProvider loadCredentialsFromEnvironment(){
-        String accessKey = System.getenv("aws_access_key_id");
-        String secretKey = System.getenv("aws_secret_access_key");
-
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-        return new AWSStaticCredentialsProvider(awsCreds);
-    }
-
-    /**
      * Creates a temporary file with text data to demonstrate uploading a file
      * to Amazon S3
      *
@@ -67,5 +56,17 @@ public class UploadFileS3 {
 
         return file;
     }
+    /**
+     * It loads AWS access key id and secret access key from AWS environment in order
+     * to have access to AWS S3 Bucket. Then it creates objects needed to make a AWS S3 upload.
+     *
+     * @return AWSStaticCredentialsProvider that contains information about AWS key access.
+     */
+    private AWSStaticCredentialsProvider loadCredentialsFromEnvironment(){
+        String accessKey = System.getenv("aws_access_key_id");
+        String secretKey = System.getenv("aws_secret_access_key");
 
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        return new AWSStaticCredentialsProvider(awsCreds);
+    }
 }
