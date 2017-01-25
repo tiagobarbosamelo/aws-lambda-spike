@@ -30,7 +30,7 @@ public class LambdaLog4j implements RequestHandler<MyPojo, String> {
      */
     public String handleRequest(MyPojo input, Context context) {
         String message =
-                "Hello world Lambda! First name = " + input.getFirstName() + "last name = " + input.getLastName();
+                "Hello world Lambda! First name = " + input.getTimeout() + "last name = " + input.getThrowException();
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Debug is enabled");

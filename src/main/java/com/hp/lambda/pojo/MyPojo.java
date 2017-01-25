@@ -8,12 +8,40 @@
 package com.hp.lambda.pojo;
 
 public class MyPojo {
-    private String firstName;
-    private String lastName;
+    private Integer timeout;
+    private Boolean throwException;
+    private Boolean randomFailure;
+    private String s3BucketName;
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public Integer getTimeout() {
+        return timeout;
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
+    }
+
+    public Boolean getThrowException() {
+        return throwException;
+    }
+
+    public void setThrowException(Boolean throwException) {
+        this.throwException = throwException;
+    }
+
+    public String getS3BucketName() {
+        return s3BucketName;
+    }
+
+    public void setS3BucketName(String s3BucketName) {
+        this.s3BucketName = s3BucketName;
+    }
+
+    public Boolean getRandomFailure() {
+        return randomFailure;
+    }
+
+    public void setRandomFailure(Boolean randomFailure) {
+        this.randomFailure = randomFailure;
+    }
 }
