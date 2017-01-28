@@ -11,7 +11,6 @@ public class MyPojo {
     private Integer timeout;
     private Boolean throwException;
     private Boolean randomFailure;
-    private String s3BucketName;
 
     public Integer getTimeout() {
         return timeout;
@@ -27,14 +26,6 @@ public class MyPojo {
 
     public void setThrowException(Boolean throwException) {
         this.throwException = throwException;
-    }
-
-    public String getS3BucketName() {
-        return s3BucketName;
-    }
-
-    public void setS3BucketName(String s3BucketName) {
-        this.s3BucketName = s3BucketName;
     }
 
     public Boolean getRandomFailure() {

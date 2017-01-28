@@ -29,9 +29,7 @@ public class Hello implements RequestHandler<MyPojo, String> {
      */
     public String handleRequest(MyPojo myPojo, Context context) {
         LambdaLogger logger = context.getLogger();
-        String message = "MyPojo = timeout = " + myPojo.getTimeout() + " -  should throw exception = " + myPojo
-                .getThrowException() + " - s3 bucket name= " + myPojo.getS3BucketName() + " - random failure" + myPojo
-                .getRandomFailure();
+        String message = pojoInfo(myPojo);
         logger.log(message);
 
         if (myPojo.getRandomFailure()) {
@@ -51,5 +49,10 @@ public class Hello implements RequestHandler<MyPojo, String> {
         }
 
         return message;
+    }
+
+    private String pojoInfo(MyPojo myPojo) {
+        return "MyPojo = timeout = " + myPojo.getTimeout() + " -  should throw exception = " + myPojo
+                .getThrowException() + " - random failure" + myPojo.getRandomFailure();
     }
 }

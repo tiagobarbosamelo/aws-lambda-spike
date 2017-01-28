@@ -16,12 +16,16 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Lambda class to deal with AWS Kinesis Stream events
+ * Lambda class to deal with AWS Kinesis Stream events.
  */
-public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
+public class LambdaKinesisWritesToS3 implements RequestHandler<KinesisEvent, Object> {
+
+    String bucketName = "tiago-melo-hello-world-bucket";
+    String fileName = "MyLambdaLog.txt";
 
     /**
-     * Handle AWS Kinesis stream event. Gets data from Kinesis stream record and logs into CloudWatch.
+     * Handle AWS Kinesis stream event.
+     * Put content from AWS Kinesis Stream into a txt file on AWS S3 bucket.
      *
      * @param input   Kinesis stream event.
      * @param context The Lambda execution environment context object.
@@ -33,15 +37,20 @@ public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
         List<KinesisEvent.KinesisEventRecord> records = input.getRecords();
 
         StringBuilder sb = new StringBuilder();
-        String data;
+        String data = "";
 
         for (KinesisEvent.KinesisEventRecord record : records) {
-            record.setKinesis(new KinesisEvent.Record());
             data = new String(record.getKinesis().getData().array());
             sb.append(data);
         }
 
         context.getLogger().log("Input: " + sb.toString());
+
+        try {
+            new UploadFileS3().uploadFileToS3Bucket(bucketName, fileName, data);
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
+        }
 
         return sb.toString();
     }

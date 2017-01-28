@@ -1,5 +1,5 @@
 {
   "timeout": 1000,
   "throwException": false,
-  "s3BucketName": "s3-bucket-name"
+  "randomFailure": false
 }
