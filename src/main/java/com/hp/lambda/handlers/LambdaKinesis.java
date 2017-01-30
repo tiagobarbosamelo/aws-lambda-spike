@@ -36,7 +36,6 @@ public class LambdaKinesis implements RequestHandler<KinesisEvent, Object> {
         String data;
 
         for (KinesisEvent.KinesisEventRecord record : records) {
-            record.setKinesis(new KinesisEvent.Record());
             data = new String(record.getKinesis().getData().array());
             sb.append(data);
         }
