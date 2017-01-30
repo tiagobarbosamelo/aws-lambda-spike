@@ -1,5 +1,5 @@
 /**
- * (C) Copyright 2013-2016 HP Development Company, L.P.
+ * (C) Copyright 2013-2017 HP Development Company, L.P.
  * Confidential computer software. Valid license from HP required for possession, use or copying.
  * Consistent with FAR 12.211 and 12.212, Commercial Computer Software,
  * Computer Software Documentation, and Technical Data for Commercial Items are licensed
@@ -15,9 +15,9 @@ import com.hp.lambda.pojo.MyPojo;
 import java.util.Random;
 
 /**
- * Lambda Hello World class,
+ * Lambda SampleLambda World class,
  */
-public class Hello implements RequestHandler<MyPojo, String> {
+public class SampleLambda implements RequestHandler<MyPojo, String> {
 
     /**
      * Handler sample events.
@@ -25,7 +25,7 @@ public class Hello implements RequestHandler<MyPojo, String> {
      * @param myPojo  It receives a JSON that represent MyPojo class
      * @param context The Lambda execution environment context object.
      *
-     * @return Hello world message
+     * @return SampleLambda world message
      */
     public String handleRequest(MyPojo myPojo, Context context) {
         LambdaLogger logger = context.getLogger();
